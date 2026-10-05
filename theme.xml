@@ -2,7 +2,7 @@
 <!--
 =====================================================================
  BatWiiCera - an EmulationStation theme for Batocera
- Version : 0.1.20
+ Version : 0.1.24
  Author  : yiddifliddo
  Licence : Creative Commons BY-NC-SA 4.0 (see LICENSE)
 
@@ -71,6 +71,20 @@
        Screen overlay: clock sits in the dip of the bottom bar
        ============================================================= -->
   <view name="screen">
+    <!-- One shared copy of the RetroAchievements picture: the screen overlay is
+         built once and drawn over every view, so no per-console reload or
+         flicker. The engine substitutes the username when the theme loads;
+         the ?v= tag forces a fresh download per theme release (the cache
+         never expires on its own). -->
+    <webimage name="ra-avatar" if="{global.cheevos} == true">
+      <path>https://media.retroachievements.org/UserPic/${global.cheevos.username}.png?v=0124</path>
+      <pos>0.15 0.875</pos>
+      <origin>0.5 0.5</origin>
+      <maxSize>0.042 0.075</maxSize>
+      <roundCorners>0.2</roundCorners>
+      <linearSmooth>true</linearSmooth>
+      <zIndex>60</zIndex>
+    </webimage>
     <text name="clock">
       <pos>0.5 0.775</pos>
       <origin>0.5 0.5</origin>
@@ -186,23 +200,11 @@
          Signed in: the player's avatar and user name, fetched from
          RetroAchievements. Not signed in: a grey trophy and a label.
          Either one opens the RetroAchievements panel when clicked. -->
-    <webimage name="ra-avatar" extra="true" if="{global.cheevos} == true" onclick="cheevos">
-      <!-- The engine substitutes ${global.cheevos.username} when the theme is
-           parsed, and caches every downloaded image for ever under
-           configs/emulationstation/tmp. RetroAchievements answers with its
-           default joystick picture for an account that has no picture yet, so
-           a stale default could stick for good. The ?v= tag changes with each
-           theme release, which gives the cache a new file name and forces a
-           fresh download. -->
-      <path>https://media.retroachievements.org/UserPic/${global.cheevos.username}.png?v=0120</path>
-      <pos>0.15 0.875</pos>
-      <origin>0.5 0.5</origin>
-      <maxSize>0.042 0.075</maxSize>
-      <roundCorners>0.2</roundCorners>
-      <linearSmooth>true</linearSmooth>
-      <zIndex>25</zIndex>
-    </webimage>
-    <image name="ra-trophy" extra="true" if="{global.cheevos} == false" onclick="cheevos">
+    <!-- RetroAchievements: the player's picture lives in the "screen" overlay
+         view (one copy for the whole interface, so it never reloads when the
+         console highlight moves). Signed out: a grey trophy. The name below
+         opens the RetroAchievements panel when clicked. -->
+    <image name="ra-trophy" extra="static" if="{global.cheevos} == false" onclick="cheevos">
       <path>./_inc/images/trophy.svg</path>
       <pos>0.15 0.875</pos>
       <origin>0.5 0.5</origin>
@@ -210,7 +212,7 @@
       <color>B8B8B8FF</color>
       <zIndex>25</zIndex>
     </image>
-    <text name="ra-name" extra="true" onclick="cheevos">
+    <text name="ra-name" extra="static" onclick="cheevos">
       <text>RetroAchievements</text>
       <text if="{global.cheevos} == true">${global.cheevos.username}</text>
       <pos>0.15 0.935</pos>
@@ -249,14 +251,14 @@
        ============================================================= -->
   <view name="system">
     <!-- Round buttons: click actions (mouse or touch) -->
-    <image name="home-button" extra="true" onclick="search">
+    <image name="home-button" extra="static" onclick="search">
       <pos>0.075 0.865</pos>
       <origin>0.5 0.5</origin>
       <maxSize>0.075 0.135</maxSize>
       <path>${homeButtonImage}</path>
       <zIndex>25</zIndex>
     </image>
-    <image name="mail-button" extra="true" onclick="netplay">
+    <image name="mail-button" extra="static" onclick="netplay">
       <pos>0.925 0.865</pos>
       <origin>0.5 0.5</origin>
       <maxSize>0.075 0.135</maxSize>
@@ -374,14 +376,14 @@
        ============================================================= -->
   <view name="basic, detailed, grid">
     <!-- Round buttons: click actions (mouse or touch) -->
-    <image name="home-button" extra="true" onclick="back">
+    <image name="home-button" extra="static" onclick="back">
       <pos>0.075 0.865</pos>
       <origin>0.5 0.5</origin>
       <maxSize>0.075 0.135</maxSize>
       <path>${homeButtonImage}</path>
       <zIndex>25</zIndex>
     </image>
-    <image name="mail-button" extra="true" onclick="gameoptions">
+    <image name="mail-button" extra="static" onclick="gameoptions">
       <pos>0.925 0.865</pos>
       <origin>0.5 0.5</origin>
       <maxSize>0.075 0.135</maxSize>

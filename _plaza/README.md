@@ -1,6 +1,6 @@
 # Plaza, embedded in the BatWiiCera theme
 
-This folder carries the BatWiiCera Plaza (version 0.1.7), the online room
+This folder carries the BatWiiCera Plaza (version 0.1.9), the online room
 a football stadium where players running the theme meet as avatars, see what everyone is
 playing, run around, hop, slap and kick a ball. Full details, controls and
 privacy notes are in `PLAZA-README.md`.

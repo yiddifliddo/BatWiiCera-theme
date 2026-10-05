@@ -1,6 +1,6 @@
 #!/bin/bash
 # BatWiiCera Plaza - installer for Batocera
-# Version 0.1.7 | Author: yiddifliddo | Licence: MIT
+# Version 0.1.9 | Author: yiddifliddo | Licence: MIT
 #
 # Normally nobody runs this by hand: Plaza.sh (under Ports, or as the channel
 # entry) calls it, the Plaza client's menu item calls it indirectly, and the

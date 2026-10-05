@@ -1,6 +1,6 @@
 #!/bin/bash
 # BatWiiCera Plaza - presence hook for Batocera
-# Version 0.1.7 | Author: yiddifliddo | Licence: MIT
+# Version 0.1.9 | Author: yiddifliddo | Licence: MIT
 #
 # Batocera runs every executable in /userdata/system/scripts/ when a game
 # starts or stops, passing:  <gameStart|gameStop> <system> <emulator> <core> <rom>

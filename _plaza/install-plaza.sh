@@ -1,6 +1,6 @@
 #!/bin/bash
 # BatWiiCera - install the embedded Plaza channel on this Batocera machine
-# Theme 0.1.19 / Plaza 0.1.7 | Author: yiddifliddo | Licence: MIT (Plaza)
+# Theme 0.1.21 / Plaza 0.1.9 | Author: yiddifliddo | Licence: MIT (Plaza)
 #
 # Usually not needed: the full-install zip, the Ports entry (installer/Plaza.sh)
 # and the Plaza client's own menu all install the channel without a terminal.

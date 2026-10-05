@@ -1,6 +1,6 @@
 #!/bin/bash
 # BatWiiCera Plaza - the one script that installs, repairs and launches the Plaza
-# Version 0.1.7 | Author: yiddifliddo | Licence: MIT
+# Version 0.1.9 | Author: yiddifliddo | Licence: MIT
 #
 # The same file lives in two places:
 #   /userdata/roms/plaza/Plaza.sh  - the Plaza channel's single entry (EmulationStation runs it)

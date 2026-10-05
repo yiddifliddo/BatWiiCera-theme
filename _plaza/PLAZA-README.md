@@ -1,4 +1,4 @@
-# BatWiiCera Plaza - version 0.1.7
+# BatWiiCera Plaza - version 0.1.9
 
 **Author:** yiddifliddo (personal project)
 **Licence:** MIT (see `../LICENSE`)
@@ -13,7 +13,7 @@ scores in the two goals. The pitch grows as more people arrive.
 
 | Folder | What it is | Runs on |
 | --- | --- | --- |
-| `server/` | Room server, plain Node.js, no dependencies | your VPS |
+| `server/` | Room server plus the netplay relay (`tunnel.js`), plain Node.js, no dependencies | Railway or your VPS |
 | `client/` | The game, written for the LÖVE engine | each Batocera box |
 | `runtime/` | The LÖVE engine itself (official self-contained Linux build, x86_64), because Batocera does not ship one | each Batocera box |
 | `hook/` | Game-start/stop script that reports what you are playing | each Batocera box |
@@ -97,6 +97,28 @@ On first entry choose **Edit avatar** to pick a nickname and look.
 Then on each machine choose **Server address** in the Plaza menu and enter the
 host, or `host:port`.
 
+## Netplay relay (play Batocera netplay with friends, no port forwarding)
+
+The server also runs a RetroArch **relay server** on port 55435 (the same
+one RetroArch's built-in relays use). It speaks RetroArch's tunnel protocol,
+so stock Batocera works with it:
+
+1. **Expose it once.** On Railway: Settings > Networking > TCP Proxy, port
+   55435; note the `host:port` it shows. On a VPS: open TCP 55435.
+2. **The host sets it once.** On the Batocera box that will host games:
+   Main Menu > Game Settings > Netplay Settings > **Relay server: Custom**,
+   and enter that `host:port`. Leave "Use relay server" on.
+3. **Host a game** from the gamelist (select a game, Netplay > Host). The
+   game appears in Batocera's netplay list for everyone.
+4. **Friends join** from Main Menu > Netplay on their own Batocera. Nothing
+   to set on their side: the lobby entry carries the relay address and the
+   session id, and their RetroArch connects through the relay.
+
+Everything goes through the relay, so nobody needs ports open at home.
+Each hosted game is one relay session with one link per joining player
+(`PLAZA_TUNNEL_MAX` sessions at once, default 64). `/health` and `/stats`
+report the relay's live counts. Set `PLAZA_TUNNEL_PORT=0` to switch it off.
+
 ### Colours
 
 The Plaza uses the BatWiiCera theme's own palette. By default it reads the
@@ -137,6 +159,7 @@ editor to hide it. Nothing else leaves the machine.
 
 | Check | Result |
 | --- | --- |
+| Netplay relay test (`node server/test/tunnel.js`): address encoding, session request, refusal of unknown sessions, link notice, address request and reply, link pairing with early bytes, piping both ways, refusal of unknown links, ping reply, teardown with the host | Pass |
 | Server smoke test (`npm test`): name generator, version gate, join/leave, seven-field snapshots, clamping to the stands, facing wrap, slap cone targeting and cooldown, kick range and physics, goal-line bounce versus goal through the mouth, score and reset, presence hook online and remembered, profile update by seed, health and stats | Pass |
 | Client self-test under plain Lua (`lua5.1 test/run.lua`): JSON, avatar validation, message handling, acceleration/braking/skid physics, eight-way facing, snapshot interpolation and extrapolation, ball prediction, camera framing with look-ahead, goals and confetti, generated names (shared values with the server), actions, palette detection, keyboard widget, config persistence with the name seed, built-in public server, embedded install files, presence hand-over | Pass, 86 checks |
 | Client rendering under LÖVE 11.5 on a virtual framebuffer (`love . --demo`): stadium (play view and wide view), editor, menu and the avatar sheet drawn without error, light and dark, screenshots in `previews/` | Pass |
@@ -144,7 +167,7 @@ editor to hide it. Nothing else leaves the machine.
 | Shell installer, Ports entry and hook: syntax check; installer dry run into a temporary root | Pass |
 | Public server reachable: `GET /health` on the Railway domain | Pass (TCP proxy not testable from the build machine, see PCR-0005) |
 | Installer upgrade over a 0.1.4 layout and a launch of the channel entry through the bundled runtime, on an x86_64 build machine with a virtual display | Pass (client ran until stopped) |
-| On a Batocera device with a controller | 0.1.6 passed (author, 2026-10-05: "The plaza works"). 0.1.7's stadium, movement and names **not yet tested on a device** |
+| On a Batocera device with a controller | 0.1.6 passed; 0.1.7 stadium runs on the device (photo, 2026-10-05) and showed the D fault fixed here. 0.1.9 markings **not yet seen on a device** |
 
 ## Known limitations
 
@@ -158,7 +181,31 @@ editor to hide it. Nothing else leaves the machine.
   ARM boxes get a clear message in `/userdata/system/logs/plaza.log`; an ARM
   runtime can be added to `runtime/` later.
 
-## Changes in this version (0.1.7)
+## Changes in this version (0.1.9)
+
+* **Pitch markings to scale.** The first device test showed the penalty-area
+  D running on into the box. The markings are now drawn in the proportions
+  of a 105 x 68 m pitch (centre circle and D radius 9.15 m, penalty area
+  16.5 x 40.32 m, goal area 5.5 x 18.32 m, spot at 11 m, corner arcs 1 m),
+  and the D is the part of the circle round the spot that lies outside the
+  box, so it starts and ends exactly on the box line.
+* Demo mode adds a penalty-area close-up (`previews/plaza-box.png`).
+* Server unchanged apart from the version string.
+
+## Changes in version 0.1.8
+
+* **Netplay relay built into the server.** `server/tunnel.js` implements
+  RetroArch's relay ("tunnel server") protocol, read from
+  `network/netplay/netplay_frontend.c`: session request and id, link notice
+  to the host, peer address request and reply (IPv6 or `::ffff:a.b.c.d`),
+  link connection pairing with byte piping both ways, and ping/pong
+  keep-alives. One port (default 55435, `PLAZA_TUNNEL_PORT`), so a single
+  Railway TCP proxy exposes it. Health and stats report relay counts.
+* New `server/test/tunnel.js` plays a host and a client against it;
+  `npm test` runs both server tests.
+* Client unchanged apart from the version string.
+
+## Changes in version 0.1.7
 
 * **A football stadium.** The box with a blue border is gone. The room is a
   full pitch (2400 x 1500 at the start, three times the old area, still

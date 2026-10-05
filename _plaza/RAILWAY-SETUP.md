@@ -1,6 +1,6 @@
 # Running the Plaza server on Railway
 
-Author: yiddifliddo. For Plaza 0.1.7.
+Author: yiddifliddo. For Plaza 0.1.9.
 
 **The public BatWiiCera server already runs this way** and is built into the
 client, so nobody needs to follow this guide to play. It is for running your
@@ -59,6 +59,13 @@ shows a proxy address such as `maglev.proxy.rlwy.net:28071`. Note both the
 host and the port; the port is fixed for this proxy. No volume is needed:
 the server keeps everything in memory.
 
+## 3b. TCP Proxy for the netplay relay (0.1.8 and later)
+
+**Settings > Networking > TCP Proxy > Add** again, this time port **55435**.
+Railway shows a second proxy address. That `host:port` is what the hosting
+Batocera enters under Netplay Settings > Relay server > Custom. Friends who
+join need nothing: the lobby entry carries it.
+
 ## 4. Variables (optional)
 
 None are required. If you want them, add under **Variables**:
@@ -68,6 +75,8 @@ None are required. If you want them, add under **Variables**:
 | `PLAZA_MAX` | player cap, default 200 |
 | `PLAZA_BLOCKED_WORDS` | comma-separated extra words for the nickname filter |
 | `PLAZA_TCP_PORT` | only if you used a different port for the TCP proxy |
+| `PLAZA_TUNNEL_PORT` | netplay relay port, default 55435; `0` turns the relay off |
+| `PLAZA_TUNNEL_MAX` | relay sessions at once, default 64 |
 | `PLAZA_HTTP_PORT` | pin the HTTP side to the port the public domain targets (8080 for the public server); not needed since 0.1.5, which detects the clash below |
 | `PLAZA_HTTP_FALLBACK_PORT` | where the HTTP side goes when `PORT` equals the game port (default 8080) |
 
