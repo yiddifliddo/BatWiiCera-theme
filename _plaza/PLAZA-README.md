@@ -1,22 +1,23 @@
-# BatWiiCera Plaza - version 0.1.4
+# BatWiiCera Plaza - version 0.1.7
 
 **Author:** yiddifliddo (personal project)
 **Licence:** MIT (see `../LICENSE`)
 **Companion to:** the BatWiiCera theme for Batocera
 
-The Plaza is a channel for BatWiiCera: one shared online room where everyone
-running the theme meets as a small cartoon avatar, sees what the others are
-playing, runs around, hops, slaps and kicks a ball about. The room zooms out
-as more people arrive.
+The Plaza is a channel for BatWiiCera: one shared online football stadium
+where everyone running the theme meets as a small cartoon avatar, sees what
+the others are playing, runs around the pitch, hops, slaps, kicks a ball and
+scores in the two goals. The pitch grows as more people arrive.
 
 ## Parts
 
 | Folder | What it is | Runs on |
 | --- | --- | --- |
 | `server/` | Room server, plain Node.js, no dependencies | your VPS |
-| `client/` | The game, written for the LÖVE engine that Batocera ships | each Batocera box |
+| `client/` | The game, written for the LÖVE engine | each Batocera box |
+| `runtime/` | The LÖVE engine itself (official self-contained Linux build, x86_64), because Batocera does not ship one | each Batocera box |
 | `hook/` | Game-start/stop script that reports what you are playing | each Batocera box |
-| `installer/` | Shell installer, the one-file Ports entry `Plaza.sh`, custom system definition, channel logo | each Batocera box |
+| `installer/` | `Plaza.sh` (installs, repairs and launches; the channel entry and the Ports entry), shell installer, system definition, game list with artwork, channel logo | each Batocera box |
 | `dist/` | Built packages: `BatWiiCera-Plaza.love` and the server tarball | |
 | `previews/` | Rendered screens, light and dark (`plaza-plaza.png`, `plaza-plaza-dark.png`, editor and menu likewise) | |
 
@@ -25,7 +26,7 @@ as more people arrive.
 | Input | In the plaza | In menus |
 | --- | --- | --- |
 | Stick or d-pad | Walk | Move / change value |
-| A | Kick the ball when it is near you, otherwise slap the player in front | Choose |
+| A | Kick the ball when it is near you, otherwise slap the player in front | Choose / new name on the Name row |
 | X | Hop | Toggle letter case (keyboard) |
 | Y | | Randomise avatar |
 | START | Open the avatar editor | Save / finish typing |
@@ -112,6 +113,10 @@ editor to hide it. Nothing else leaves the machine.
 
 ## How it works
 
+* Batocera has no LÖVE engine, so the Plaza carries the official LÖVE 11.5
+  Linux build (`runtime/`). The installer unpacks it once into
+  `roms/plaza/runtime/x86_64/` and the channel's entry, `Plaza.sh`, starts the
+  client with it. No FUSE, no system packages.
 * The client talks to the server over one TCP connection using one JSON
   message per line. It sends its position 15 times a second; the server
   rebroadcasts a compact snapshot of everyone, plus the ball, 15 times a
@@ -132,22 +137,104 @@ editor to hide it. Nothing else leaves the machine.
 
 | Check | Result |
 | --- | --- |
-| Server smoke test (`npm test`): cleaners, version gate, join/leave, snapshots, clamping, slap targeting and cooldown, kick range and physics, presence hook online and remembered, profile update, health and stats | Pass |
-| Client self-test under plain Lua (`lua5.1 test/run.lua`): JSON, avatar validation, message handling, local physics, interpolation, ball prediction, camera framing, actions, palette detection, keyboard widget, config persistence, built-in public server, host:port and presence parsing, embedded install files including the Ports entry, presence hand-over | Pass, 67 checks |
-| Client rendering under LÖVE 11.5 on a virtual framebuffer (`love . --demo`): plaza, editor and menu screens drawn without error, screenshots in `previews/` | Pass |
+| Server smoke test (`npm test`): name generator, version gate, join/leave, seven-field snapshots, clamping to the stands, facing wrap, slap cone targeting and cooldown, kick range and physics, goal-line bounce versus goal through the mouth, score and reset, presence hook online and remembered, profile update by seed, health and stats | Pass |
+| Client self-test under plain Lua (`lua5.1 test/run.lua`): JSON, avatar validation, message handling, acceleration/braking/skid physics, eight-way facing, snapshot interpolation and extrapolation, ball prediction, camera framing with look-ahead, goals and confetti, generated names (shared values with the server), actions, palette detection, keyboard widget, config persistence with the name seed, built-in public server, embedded install files, presence hand-over | Pass, 86 checks |
+| Client rendering under LÖVE 11.5 on a virtual framebuffer (`love . --demo`): stadium (play view and wide view), editor, menu and the avatar sheet drawn without error, light and dark, screenshots in `previews/` | Pass |
 | Presence hook end to end against a local server (tag stripping, system suffix, start and stop, built-in default when no config) | Pass |
 | Shell installer, Ports entry and hook: syntax check; installer dry run into a temporary root | Pass |
 | Public server reachable: `GET /health` on the Railway domain | Pass (TCP proxy not testable from the build machine, see PCR-0005) |
-| On a Batocera device with a controller (install via Ports, full zip, and client menu; automatic restart) | **Not performed** - first device test is the next step |
+| Installer upgrade over a 0.1.4 layout and a launch of the channel entry through the bundled runtime, on an x86_64 build machine with a virtual display | Pass (client ran until stopped) |
+| On a Batocera device with a controller | 0.1.6 passed (author, 2026-10-05: "The plaza works"). 0.1.7's stadium, movement and names **not yet tested on a device** |
 
 ## Known limitations
 
-* No chat, emotes or friends yet. Phase two material.
-* One room for everyone. Regional rooms can follow if the crowd grows.
+* No chat, emotes, teams or friends yet. Phase two material.
+* One stadium for everyone. Regional rooms can follow if the crowd grows.
+* The scoreboard counts goals into each end; there are no teams, so it is a
+  shared tally rather than a match.
 * The ball is server-side only; a laggy connection shows it a little behind.
 * Pads without an SDL gamepad mapping fall back to buttons 1 to 4 as A, B, X, Y.
+* x86_64 Batocera only for now: the bundled runtime is the x86_64 build.
+  ARM boxes get a clear message in `/userdata/system/logs/plaza.log`; an ARM
+  runtime can be added to `runtime/` later.
 
-## Changes in this version (0.1.4)
+## Changes in this version (0.1.7)
+
+* **A football stadium.** The box with a blue border is gone. The room is a
+  full pitch (2400 x 1500 at the start, three times the old area, still
+  growing with the crowd): mown stripes, touchlines, centre circle, penalty
+  and goal areas, corner flags, two goals with nets, a running track, three
+  tiers of stands full of colour, floodlights and a scoreboard. Players can
+  run off the pitch onto the track and up to the stands; the ball bounces
+  off the lines.
+* **Goals count.** A ball through either goal mouth scores for that end,
+  the scoreboard flashes, confetti falls and a banner names the scorer; the
+  ball returns to the centre spot after a short pause.
+* **Movement that reads as a body.** Acceleration and braking curves, a
+  skid with dust when you reverse at speed, eight-direction facing from the
+  stick with a smooth turn, hops with a landing squash and dust, slaps that
+  knock the victim along the slapper's facing with a recoil.
+* **Other players move smoothly.** Snapshots now carry velocity; the client
+  renders others a tenth of a second behind the server, interpolating
+  between snapshots and predicting with velocity when one is late, instead
+  of chasing positions with a lag filter.
+* **New avatar renderer.** Jointed hips, knees, shoulders and elbows driven
+  by a stride cycle that scales with speed, torso lean, head bob, breathing
+  and glances at idle, slap, kick, hit, jump and skid poses, two-tone
+  shading with a consistent light, outlines, and the same model drawn from
+  all eight directions (front, back and profile). Still generated from the
+  same nine numbers, so old avatars look right.
+* **Names are generated, never typed.** Every player is "Adjective Animal
+  number" from curated wordlists, picked by a hash of the install token and
+  a seed. The editor's Name row rolls a new one. The server computes the
+  name itself and ignores anything else a client sends, so a modified
+  client cannot smuggle a name in. The nickname keyboard and the word
+  filter are gone.
+* **Camera** follows you with look-ahead and a dead zone, zooms to keep the
+  ball and nearby players in frame, and ignores players far away.
+* Protocol: `hello` and `update` carry `nameSeed`; `move` carries `vx`,
+  `vy` and a facing in degrees; snapshot rows are
+  `[id, x, y, dir, anim, vx, vy]`; `welcome` and `world` carry `pitch` and
+  `score`; new `goal` event; `slap` carries `angle`. 0.1.6 clients still
+  connect but draw facings wrongly; update the theme embed.
+* Version 0.1.7 everywhere; packages rebuilt.
+
+## Changes in version 0.1.6
+
+* **The channel now actually starts on Batocera.** The first device test
+  showed the Plaza closing immediately: Batocera does not ship the LÖVE
+  engine, which every earlier version assumed. The Plaza now carries the
+  official LÖVE 11.5 Linux build (`runtime/`, zlib licence, 5 MB). The
+  installer unpacks it once; `Plaza.sh` starts the client with it.
+* **One launcher script.** `installer/Plaza.sh` is now both the channel's
+  entry in `roms/plaza` (the system definition lists `.sh` and runs
+  `bash %ROM%`) and the Ports entry. Not installed yet: it installs from the
+  theme folder and restarts EmulationStation. Installed: it launches,
+  unpacking the runtime if needed and restoring permissions. Logs to
+  `/userdata/system/logs/plaza.log`.
+* **Proper game screen.** The channel's entry is named "Plaza" and ships
+  artwork (`installer/images/`: plaza preview and logo), developer,
+  publisher, release date, "1-200 players" and genre, so the theme's preview
+  panel and Batocera's launch splash show the Plaza instead of placeholders.
+* Client self-install copies the runtime and artwork from the theme folder
+  and writes the launcher to both places. `conf.lua` targets LÖVE 11.5.
+* Version 0.1.6 everywhere; packages rebuilt. Client gameplay unchanged.
+
+## Changes in version 0.1.5
+
+* **Server: port clash on Railway fixed.** Once a TCP proxy exists Railway
+  sets `PORT` to the proxy's port (7777), the same one the game listener
+  uses, so 0.1.4 crashed with `EADDRINUSE` on start. The server now resolves
+  ports in one place (`resolvePorts`): `PLAZA_TCP_PORT` and
+  `PLAZA_HTTP_PORT` always win; otherwise HTTP takes `PORT`, and if that
+  equals the game port it moves to `PLAZA_HTTP_FALLBACK_PORT` (default 8080,
+  the port the public domain was generated with) and says so in the log.
+  Listen errors now print one clear line and exit instead of a stack trace.
+* Smoke test covers the port resolution. Client unchanged apart from the
+  version string; the theme's embedded copy stays at 0.1.4 until the next
+  theme release.
+
+## Changes in version 0.1.4
 
 * **Nothing to type.** The public BatWiiCera server (Railway) is built into
   the client, the presence hook and the shell installer:

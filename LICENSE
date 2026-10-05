@@ -1,5 +1,5 @@
 BatWiiCera - EmulationStation theme for Batocera
-Version 0.1.15
+Version 0.1.20
 Copyright (c) 2026 yiddifliddo
 
 This theme is licensed under the Creative Commons
@@ -57,9 +57,16 @@ from that theme are included.
 
 All other artwork in _inc/images was created for this theme by yiddifliddo.
 
-4. Background music loop (_music/batwiicera-menu-loop.ogg)
-   Supplied by yiddifliddo for this theme and distributed under the theme licence
-   (CC BY-NC-SA 4.0).
+4. Background music (_music/)
+   batwiicera-menu-theme.ogg - menu theme supplied by yiddifliddo for this
+   theme (not a Nintendo recording), lowered by 12 dB.
+   batwiicera-menu-loop.ogg - quiet bass loop supplied by yiddifliddo.
+   Both distributed under the theme licence (CC BY-NC-SA 4.0).
+
+5. Plaza runtime (_plaza/runtime/love-11.5-x86_64.AppImage)
+   LÖVE 11.5, copyright the LÖVE Development Team, zlib licence
+   (_plaza/runtime/LICENSE-love.txt). Unmodified official Linux build.
+   The Plaza itself is MIT licensed (_plaza/LICENSE).
 
 ---------------------------------------------------------------------------
 Trademarks

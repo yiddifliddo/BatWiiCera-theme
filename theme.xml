@@ -2,7 +2,7 @@
 <!--
 =====================================================================
  BatWiiCera - an EmulationStation theme for Batocera
- Version : 0.1.15
+ Version : 0.1.20
  Author  : yiddifliddo
  Licence : Creative Commons BY-NC-SA 4.0 (see LICENSE)
 
@@ -49,8 +49,10 @@
     <include name="mix" displayName="Mix image" />
   </subset>
 
-  <subset name="music" displayName="Background music (from _music folder)">
-    <include name="on" displayName="On">./_inc/music.xml</include>
+  <subset name="music" displayName="Background music">
+    <include name="menu" displayName="Menu theme">./_inc/music-menu.xml</include>
+    <include name="loop" displayName="Quiet bass loop">./_inc/music-loop.xml</include>
+    <include name="all" displayName="All tracks in _music (shuffle)">./_inc/music.xml</include>
     <include name="off" displayName="Off" />
   </subset>
 
@@ -141,10 +143,13 @@
     <menuButton name="menubutton">
       <!-- The engine multiplies these by the menu text colour (normal) and the
            selector colour (focused): white outline -> grey outline with dark text,
-           white solid -> blue pill with white text -->
+           white solid -> blue pill with white text.
+           cornerSize is in screen pixels and the button is only as tall as its
+           text (about 40 px at 1080p), so the corners must stay small: 36 px
+           textures with 12 px corners stretch into a pill at any resolution. -->
       <path>./_inc/images/pill-outline.png</path>
       <filledPath>./_inc/images/pill-solid.png</filledPath>
-      <cornerSize>40 40</cornerSize>
+      <cornerSize>12 12</cornerSize>
     </menuButton>
     <helpsystem name="help">
       <textColor>${textSecondary}</textColor>
@@ -182,7 +187,14 @@
          RetroAchievements. Not signed in: a grey trophy and a label.
          Either one opens the RetroAchievements panel when clicked. -->
     <webimage name="ra-avatar" extra="true" if="{global.cheevos} == true" onclick="cheevos">
-      <path>https://media.retroachievements.org/UserPic/${global.cheevos.username}.png</path>
+      <!-- The engine substitutes ${global.cheevos.username} when the theme is
+           parsed, and caches every downloaded image for ever under
+           configs/emulationstation/tmp. RetroAchievements answers with its
+           default joystick picture for an account that has no picture yet, so
+           a stale default could stick for good. The ?v= tag changes with each
+           theme release, which gives the cache a new file name and forces a
+           fresh download. -->
+      <path>https://media.retroachievements.org/UserPic/${global.cheevos.username}.png?v=0120</path>
       <pos>0.15 0.875</pos>
       <origin>0.5 0.5</origin>
       <maxSize>0.042 0.075</maxSize>

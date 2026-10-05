@@ -1,14 +1,15 @@
 # Plaza, embedded in the BatWiiCera theme
 
-This folder carries the BatWiiCera Plaza (version 0.1.4), the online room
-where players running the theme meet as avatars, see what everyone is
+This folder carries the BatWiiCera Plaza (version 0.1.7), the online room
+a football stadium where players running the theme meet as avatars, see what everyone is
 playing, run around, hop, slap and kick a ball. Full details, controls and
 privacy notes are in `PLAZA-README.md`.
 
 The public BatWiiCera server is built in, so **nothing has to be typed**. A
 theme cannot start programs by itself, so the Plaza is a channel that
 EmulationStation launches like a game; one of the three routes below puts it
-in place.
+in place. Batocera has no LÖVE engine, so the Plaza brings its own
+(`runtime/`, x86_64 PCs for now).
 
 ## Installing the Plaza channel (pick one)
 
@@ -45,7 +46,9 @@ in the Plaza menu on each machine.
 
 | File | Purpose |
 | --- | --- |
-| `installer/Plaza.sh` | the one-file Ports entry: installs, repairs, launches |
+| `installer/Plaza.sh` | installs, repairs and launches: the channel's entry and the Ports entry |
+| `runtime/` | the LÖVE 11.5 engine (official Linux build, zlib licence), x86_64 |
+| `installer/images/` | preview and logo shown on the channel's game screen and launch splash |
 | `install-plaza.sh` | terminal installer (wrapper) |
 | `installer/install-batocera.sh` | the installer proper |
 | `installer/es_systems_plaza.cfg` | adds the Plaza system to EmulationStation |

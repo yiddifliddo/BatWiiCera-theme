@@ -1,6 +1,6 @@
 # Running the Plaza server on Railway
 
-Author: yiddifliddo. For Plaza 0.1.4.
+Author: yiddifliddo. For Plaza 0.1.7.
 
 **The public BatWiiCera server already runs this way** and is built into the
 client, so nobody needs to follow this guide to play. It is for running your
@@ -68,6 +68,8 @@ None are required. If you want them, add under **Variables**:
 | `PLAZA_MAX` | player cap, default 200 |
 | `PLAZA_BLOCKED_WORDS` | comma-separated extra words for the nickname filter |
 | `PLAZA_TCP_PORT` | only if you used a different port for the TCP proxy |
+| `PLAZA_HTTP_PORT` | pin the HTTP side to the port the public domain targets (8080 for the public server); not needed since 0.1.5, which detects the clash below |
+| `PLAZA_HTTP_FALLBACK_PORT` | where the HTTP side goes when `PORT` equals the game port (default 8080) |
 
 Do **not** set `PORT` yourself; Railway manages it.
 
@@ -106,6 +108,7 @@ Railway redeploys. The TCP proxy address and the public domain stay the same.
 
 | Symptom | Check |
 | --- | --- |
+| Deploy crashes with `EADDRINUSE ... :7777` | Railway set `PORT` to the TCP proxy port. Server 0.1.5 and later moves the HTTP side to 8080 by itself; on older servers set `PLAZA_HTTP_PORT` to the domain's port |
 | Build failed, "no build plan" or similar | Root Directory not set to the server folder, or wrong branch |
 | Health check fails after a successful build | Deploy log: the HTTP line should show the `PORT` value; make sure you did not override `PORT` |
 | Plaza client says "Connecting..." forever | TCP Proxy missing, or installer given the public domain instead of the proxy host and port for the game address |

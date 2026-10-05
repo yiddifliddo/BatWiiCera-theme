@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-BatWiiCera - background music include
+BatWiiCera - background music: everything in the _music folder
 Author: yiddifliddo
 
-Plays any audio files placed in the theme's _music folder while browsing.
-Enabled from the theme's "Background music" option in UI Settings > Theme Configuration.
-A quiet bass loop is shipped in _music; see _music/README.md to add or replace tracks.
+Shuffles every audio file in the theme's _music folder (both bundled tracks
+and anything you add) while browsing. Chosen with the theme's "Background
+music" option (UI Settings > Theme Configuration).
 -->
 <theme>
   <formatVersion>7</formatVersion>

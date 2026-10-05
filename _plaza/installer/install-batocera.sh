@@ -1,28 +1,27 @@
 #!/bin/bash
 # BatWiiCera Plaza - installer for Batocera
-# Version 0.1.4 | Author: yiddifliddo | Licence: MIT
+# Version 0.1.7 | Author: yiddifliddo | Licence: MIT
 #
-# Normally nobody runs this by hand: the Plaza client (menu item "Install
-# Plaza channel") and the Ports entry (roms/ports/Plaza.sh) call it, and the
-# theme's full-install zip lays the same files down directly. It still works
-# from a root shell on the Batocera machine:
+# Normally nobody runs this by hand: Plaza.sh (under Ports, or as the channel
+# entry) calls it, the Plaza client's menu item calls it indirectly, and the
+# theme's full-install zip lays the same files down directly. From a root
+# shell it still works:
 #
 #   bash install-batocera.sh                      # public BatWiiCera server, built in
 #   bash install-batocera.sh <game-host> [game-port] [presence]    # your own server
-#
-#   <game-host>  host of the raw game connection (VPS IP, or a TCP proxy host)
-#   [game-port]  default 7777 (Railway: the proxy port it shows you)
-#   [presence]   a port number (VPS, default 7778) or a full URL (Railway domain)
 #   --no-restart as the last argument skips the EmulationStation restart
 #
-# It installs, from the folder this script lives in:
+# It installs, from the _plaza folder this script lives in:
 #   dist/BatWiiCera-Plaza.love        -> /userdata/roms/plaza/Plaza.love
+#   runtime/love-*.AppImage           -> /userdata/roms/plaza/runtime/   (unpacked once)
+#   installer/Plaza.sh                -> /userdata/roms/plaza/Plaza.sh   (the channel entry)
+#                                     -> /userdata/roms/ports/Plaza.sh   (Ports entry)
+#   installer/gamelist.xml, images/   -> /userdata/roms/plaza/
 #   installer/es_systems_plaza.cfg    -> /userdata/system/configs/emulationstation/
 #   hook/batwiicera-plaza-presence.sh -> /userdata/system/scripts/  (executable)
-#   installer/Plaza.sh                -> /userdata/roms/ports/      (Ports entry)
-#   installer/plaza.svg               -> the BatWiiCera theme logo folders, if needed
+#   installer/plaza.svg               -> BatWiiCera theme logo folders that lack it
 # writes the server address to the Plaza config, then restarts
-# EmulationStation so the Plaza channel appears. Re-run it to repair any part.
+# EmulationStation so the Plaza channel appears. Re-run it to repair.
 
 set -e
 
@@ -54,24 +53,43 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 LOVE_FILE="$HERE/dist/BatWiiCera-Plaza.love"
 [ -f "$LOVE_FILE" ] || { echo "missing $LOVE_FILE (run build.sh first)"; exit 1; }
 
-ROMS=/userdata/roms/plaza
+PLAZA=/userdata/roms/plaza
 PORTS=/userdata/roms/ports
 ES_CFG_DIR=/userdata/system/configs/emulationstation
 SCRIPTS=/userdata/system/scripts
 SAVE_DIR="${PLAZA_SAVE_DIR:-/userdata/system/.local/share/love/batwiicera-plaza}"
 
-mkdir -p "$ROMS" "$PORTS" "$ES_CFG_DIR" "$SCRIPTS" "$SAVE_DIR"
+mkdir -p "$PLAZA/runtime" "$PLAZA/images" "$PORTS" "$ES_CFG_DIR" "$SCRIPTS" "$SAVE_DIR"
 
-cp "$LOVE_FILE" "$ROMS/Plaza.love"
-cp "$HERE/installer/gamelist.xml" "$ROMS/gamelist.xml"
+cp "$LOVE_FILE" "$PLAZA/Plaza.love"
+cp "$HERE/installer/gamelist.xml" "$PLAZA/gamelist.xml"
+cp "$HERE"/installer/images/*.png "$PLAZA/images/" 2>/dev/null || true
 cp "$HERE/installer/es_systems_plaza.cfg" "$ES_CFG_DIR/es_systems_plaza.cfg"
 cp "$HERE/hook/batwiicera-plaza-presence.sh" "$SCRIPTS/batwiicera-plaza-presence.sh"
 chmod +x "$SCRIPTS/batwiicera-plaza-presence.sh"
-# The Ports entry may be the very script that called us; only copy when different.
-if ! cmp -s "$HERE/installer/Plaza.sh" "$PORTS/Plaza.sh"; then
-  cp "$HERE/installer/Plaza.sh" "$PORTS/Plaza.sh"
+# The launcher may be the very script that called us; only copy when different.
+for dest in "$PLAZA/Plaza.sh" "$PORTS/Plaza.sh"; do
+  cmp -s "$HERE/installer/Plaza.sh" "$dest" || cp "$HERE/installer/Plaza.sh" "$dest"
+  chmod +x "$dest"
+done
+# Old 0.1.3-0.1.5 layout listed the .love itself; nothing else to clean.
+
+# The runtime: copy every bundled build, unpack the one for this machine now
+# so the first launch is instant. Unpacking needs the runtime to run here.
+ARCH="$(uname -m)"
+for app in "$HERE"/runtime/love-*.AppImage; do
+  [ -f "$app" ] || continue
+  cmp -s "$app" "$PLAZA/runtime/$(basename "$app")" || cp "$app" "$PLAZA/runtime/"
+  chmod +x "$PLAZA/runtime/$(basename "$app")"
+done
+APP="$(ls "$PLAZA"/runtime/love-*-"$ARCH".AppImage 2>/dev/null | head -n1)"
+if [ -n "$APP" ]; then
+  ( cd "$PLAZA/runtime" && rm -rf squashfs-root "$ARCH" && "$APP" --appimage-extract >/dev/null 2>&1 && mv squashfs-root "$ARCH" ) \
+    && echo "  runtime: $(basename "$APP") unpacked for $ARCH" \
+    || echo "  runtime: could not unpack $(basename "$APP") now; Plaza.sh will retry on launch"
+else
+  echo "  runtime: none bundled for $ARCH (x86_64 only so far); the Plaza will not start on this machine"
 fi
-chmod +x "$PORTS/Plaza.sh"
 
 # Server address for the client and the hook (keeps an existing profile intact).
 printf '{"host":"%s","tcpPort":%s,"httpPort":%s,"presenceUrl":"%s"}\n' "$HOST" "$TCP" "$HTTP" "$PRESENCE_URL" > "$SAVE_DIR/config.json"
@@ -82,7 +100,7 @@ for logos in /userdata/themes/BatWiiCera/_inc/systems/logos /userdata/themes/Bat
 done
 
 echo "Plaza installed."
-echo "  client : $ROMS/Plaza.love   (also under Ports as Plaza)"
+echo "  channel: $PLAZA/Plaza.sh -> $PLAZA/Plaza.love   (also under Ports as Plaza)"
 echo "  server : $HOST:$TCP (game), presence ${PRESENCE_URL:-http://$HOST:$HTTP}"
 echo "  hook   : $SCRIPTS/batwiicera-plaza-presence.sh"
 
