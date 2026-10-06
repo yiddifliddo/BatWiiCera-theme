@@ -1,5 +1,5 @@
 BatWiiCera - EmulationStation theme for Batocera
-Version 0.1.24
+Version 0.1.25
 Copyright (c) 2026 yiddifliddo
 
 This theme is licensed under the Creative Commons
@@ -29,6 +29,10 @@ Third-party material included in this theme
    https://github.com/fabricecaruso/es-theme-carbon
    Licence: Creative Commons BY-NC-SA 2.0
    Changes: copied unmodified; the white "-w" variants were not included.
+   From 0.1.25, epic, raze, vg5k, cave3rd, hbmame, appleios and model1 are
+   PNG renders of the Carbon vectors (unchanged artwork), because
+   EmulationStation's SVG renderer cannot draw their filters, clip paths
+   or embedded images.
 
 1b. Fallback system logos (_inc/systems/logos/, systems Carbon does not
    cover) and help-prompt icons (_inc/images/help-*.svg)
@@ -36,7 +40,25 @@ Third-party material included in this theme
    https://github.com/anthonycaccese/art-book-next-es
    Licence: Creative Commons BY-NC-SA
    Changes: the white fills and strokes of the fallback logos were recoloured
-   to dark grey (#4A4A4A) so they show on white tiles.
+   to dark grey (#4A4A4A) so they show on white tiles. From 0.1.25 the same
+   treatment (dark grey #3C3C3C) applies to the Art Book Next vectors that
+   replaced text-based Carbon logos (apple2gs, camplynx, cave, cgenius,
+   daphne, easyrpg, fpinball, gamepock, gx4000, imageviewer, library, lutro,
+   model2, model3, moonlight, msxturbor, multivision, openbor, pygame,
+   sonicretro, spectravideo, supervision, tic80, auto-at2players,
+   auto-at4players, auto-lastplayed, auto-lightgun, auto-neverplayed,
+   pspminis); arcadia and segastv are PNG renders of the recoloured vectors.
+
+1c. Wordmark logos (_inc/systems/logos/, PNG files named after systems that
+   had no usable logo: archimedes, atom, coco, emulators, vpinball,
+   teknoparrot, lightgun, laseractive, n64recomp, rtcw, exodos, exowin3x,
+   exowin9x, bk, bsyndrome, 2ship, dusklight, ghostship, dinothawr,
+   screenshots, uqm, jkdf2, jknight, mohaa, aarch, amcoe, centurye,
+   cinematronics, comad, dynax, exidy, igs, megaplay, megatech, mitchell,
+   neogeomvs, nmk, playchoice, seibu, seibukaihatsu, semicom, taitox,
+   tandy1k, visco, vsc) and the Plaza channel logo (plaza.png)
+   Original work by yiddifliddo, set in Nunito Bold; system and company
+   names remain the marks of their owners. Licence: as the theme.
 
 2. Gamepad activity icon (_inc/images/gamepad.svg)
    From "es-theme-minimal" by lilbud and Fabrice Caruso

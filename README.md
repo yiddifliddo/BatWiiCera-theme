@@ -1,6 +1,6 @@
 # BatWiiCera (distribution copy)
 
-Version 0.1.24 of the BatWiiCera theme for Batocera, laid out for the Themes
+Version 0.1.25 of the BatWiiCera theme for Batocera, laid out for the Themes
 Downloader: theme.xml is at the root of this repository.
 
 ## Installed from Batocera's Themes Downloader?
@@ -19,10 +19,16 @@ Then open **Ports** in EmulationStation and start **Plaza** once. It installs
 the channel from the theme folder and restarts EmulationStation by itself.
 Nothing to type: the public server is built in. x86_64 PCs only for now.
 
+## RetroBat
+
+The theme also runs on RetroBat (Windows): put this folder into
+`emulationstation\.emulationstation\themes\` and pick it under UI Settings.
+The Plaza is Batocera only (its engine is a Linux build).
+
 ## Everything else
 
 Source, version history, the single-zip installer (theme and Plaza together),
 change control and the Plaza documentation live in
-https://github.com/yiddifliddo/BatWiiCera (folder v0.1.24).
+https://github.com/yiddifliddo/BatWiiCera (folder v0.1.25).
 
 Author: yiddifliddo. Licence: CC BY-NC-SA 4.0 (see LICENSE); the Plaza is MIT.
