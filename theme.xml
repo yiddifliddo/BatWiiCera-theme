@@ -2,7 +2,7 @@
 <!--
 =====================================================================
  BatWiiCera - an EmulationStation theme for Batocera
- Version : 0.1.26
+ Version : 0.1.27
  Author  : yiddifliddo
  Licence : Creative Commons BY-NC-SA 4.0 (see LICENSE)
 
@@ -77,7 +77,7 @@
          the ?v= tag forces a fresh download per theme release (the cache
          never expires on its own). -->
     <webimage name="ra-avatar" if="{global.cheevos} == true">
-      <path>https://media.retroachievements.org/UserPic/${global.cheevos.username}.png?v=0126</path>
+      <path>https://media.retroachievements.org/UserPic/${global.cheevos.username}.png?v=0127</path>
       <pos>0.15 0.875</pos>
       <origin>0.5 0.5</origin>
       <maxSize>0.042 0.075</maxSize>
@@ -85,16 +85,16 @@
       <linearSmooth>true</linearSmooth>
       <zIndex>60</zIndex>
     </webimage>
+    <!-- The engine's own clock lives in this always-on-top layer and would
+         draw over menus. It is parked off screen and transparent here (the
+         element must exist, or the engine falls back to its small top-right
+         clock); the visible clock is the "bar-clock" element in the views
+         below, which sits under menus like the rest of the bar. -->
     <text name="clock">
-      <pos>0.5 0.775</pos>
-      <origin>0.5 0.5</origin>
-      <size>0.30 0.08</size>
-      <fontPath>${fontRound}</fontPath>
-      <fontSize>0.075</fontSize>
-      <color>${textSecondary}</color>
-      <alignment>center</alignment>
-      <verticalAlignment>center</verticalAlignment>
-      <zIndex>60</zIndex>
+      <pos>-1 -1</pos>
+      <size>0.001 0.001</size>
+      <fontSize>0.01</fontSize>
+      <color>00000000</color>
     </text>
     <!-- Controller activity: top right, clear of the help prompts, left of the network icon -->
     <controllerActivity name="controllerActivity">
@@ -177,6 +177,20 @@
        Elements shared by every browsing view
        ============================================================= -->
   <view name="system, basic, detailed, grid">
+    <!-- Big clock in the bar. A view element, not the screen layer, so it is
+         dimmed behind menus; static, so it does not fade or reload when the
+         console highlight moves. Follows the Show Clock setting. -->
+    <clock name="bar-clock" extra="static">
+      <pos>0.5 0.775</pos>
+      <origin>0.5 0.5</origin>
+      <size>0.30 0.08</size>
+      <fontPath>${fontRound}</fontPath>
+      <fontSize>0.075</fontSize>
+      <color>${textSecondary}</color>
+      <alignment>center</alignment>
+      <verticalAlignment>center</verticalAlignment>
+      <zIndex>26</zIndex>
+    </clock>
     <!-- Striped backdrop -->
     <image name="background" extra="true">
       <pos>0 0</pos>
