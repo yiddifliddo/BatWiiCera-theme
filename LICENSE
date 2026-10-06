@@ -1,5 +1,5 @@
 BatWiiCera - EmulationStation theme for Batocera
-Version 0.1.25
+Version 0.1.26
 Copyright (c) 2026 yiddifliddo
 
 This theme is licensed under the Creative Commons
@@ -59,6 +59,10 @@ Third-party material included in this theme
    tandy1k, visco, vsc) and the Plaza channel logo (plaza.png)
    Original work by yiddifliddo, set in Nunito Bold; system and company
    names remain the marks of their owners. Licence: as the theme.
+
+1d. Loading screen picture (_inc/images/splash.jpg)
+   Artwork supplied by the author (yiddifliddo) for this theme: bat mascot,
+   BatWiiCera wordmark and background. Licence: as the theme.
 
 2. Gamepad activity icon (_inc/images/gamepad.svg)
    From "es-theme-minimal" by lilbud and Fabrice Caruso

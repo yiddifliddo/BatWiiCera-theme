@@ -2,7 +2,7 @@
 <!--
 =====================================================================
  BatWiiCera - an EmulationStation theme for Batocera
- Version : 0.1.25
+ Version : 0.1.26
  Author  : yiddifliddo
  Licence : Creative Commons BY-NC-SA 4.0 (see LICENSE)
 
@@ -77,7 +77,7 @@
          the ?v= tag forces a fresh download per theme release (the cache
          never expires on its own). -->
     <webimage name="ra-avatar" if="{global.cheevos} == true">
-      <path>https://media.retroachievements.org/UserPic/${global.cheevos.username}.png?v=0125</path>
+      <path>https://media.retroachievements.org/UserPic/${global.cheevos.username}.png?v=0126</path>
       <pos>0.15 0.875</pos>
       <origin>0.5 0.5</origin>
       <maxSize>0.042 0.075</maxSize>

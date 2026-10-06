@@ -1,6 +1,6 @@
 # BatWiiCera (distribution copy)
 
-Version 0.1.25 of the BatWiiCera theme for Batocera, laid out for the Themes
+Version 0.1.26 of the BatWiiCera theme for Batocera, laid out for the Themes
 Downloader: theme.xml is at the root of this repository.
 
 ## Installed from Batocera's Themes Downloader?
@@ -29,6 +29,6 @@ The Plaza is Batocera only (its engine is a Linux build).
 
 Source, version history, the single-zip installer (theme and Plaza together),
 change control and the Plaza documentation live in
-https://github.com/yiddifliddo/BatWiiCera (folder v0.1.25).
+https://github.com/yiddifliddo/BatWiiCera (folder v0.1.26).
 
 Author: yiddifliddo. Licence: CC BY-NC-SA 4.0 (see LICENSE); the Plaza is MIT.
