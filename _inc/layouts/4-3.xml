@@ -8,8 +8,28 @@ Only the values that differ from the default 16:9 layout are listed here.
 <theme>
   <formatVersion>7</formatVersion>
 
+  <!-- Bar text: font sizes are a fraction of the screen height, and a 4:3
+       screen is much narrower for its height than 16:9, so the clock and
+       the lines under it take a far bigger share of the bar's dip. Scaled
+       by 3/4 so they fill the same share of the width as on 16:9. -->
+  <view name="system, basic, detailed, grid">
+    <clock name="bar-clock">
+      <size>0.36 0.07</size>
+      <fontSize>0.056</fontSize>
+      <fontSize tinyScreen="true">0.048</fontSize>
+    </clock>
+  </view>
+
   <!-- Console channel grid: three columns instead of four -->
   <view name="system">
+    <text name="system-name">
+      <size>0.50 0.05</size>
+      <fontSize>0.036</fontSize>
+    </text>
+    <text name="systemInfo">
+      <size>0.50 0.035</size>
+      <fontSize>0.02</fontSize>
+    </text>
     <imagegrid name="imagegrid">
       <pos>0.07 0.06</pos>
       <size>0.86 0.62</size>
