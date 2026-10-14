@@ -2,7 +2,7 @@
 <!--
 =====================================================================
  BatWiiCera - an EmulationStation theme for Batocera
- Version : 0.1.29
+ Version : 0.1.30
  Author  : yiddifliddo
  Licence : Creative Commons BY-NC-SA 4.0 (see LICENSE)
 
@@ -77,7 +77,7 @@
          the ?v= tag forces a fresh download per theme release (the cache
          never expires on its own). -->
     <webimage name="ra-avatar" if="{global.cheevos} == true">
-      <path>https://media.retroachievements.org/UserPic/${global.cheevos.username}.png?v=0129</path>
+      <path>https://media.retroachievements.org/UserPic/${global.cheevos.username}.png?v=0130</path>
       <pos>0.15 0.875</pos>
       <origin>0.5 0.5</origin>
       <maxSize>0.042 0.075</maxSize>
@@ -416,6 +416,12 @@
       <size>0.36 0.64</size>
       <path>./_inc/images/panel.png</path>
       <cornerSize>40 40</cornerSize>
+      <!-- cornerSize is in screen pixels: keep the corners the same share of
+           the screen as at 1080p by switching to a scaled texture -->
+      <path if="{screen.height} &lt; 900">./_inc/images/panel-md.png</path>
+      <cornerSize if="{screen.height} &lt; 900">27 27</cornerSize>
+      <path if="{screen.height} &lt; 600">./_inc/images/panel-sm.png</path>
+      <cornerSize if="{screen.height} &lt; 600">20 20</cornerSize>
       <color>${panelTint}</color>
       <zIndex>5</zIndex>
     </ninepatch>
@@ -424,6 +430,12 @@
       <size>0.31 0.09</size>
       <path>./_inc/images/panel.png</path>
       <cornerSize>40 40</cornerSize>
+      <!-- cornerSize is in screen pixels: keep the corners the same share of
+           the screen as at 1080p by switching to a scaled texture -->
+      <path if="{screen.height} &lt; 900">./_inc/images/panel-md.png</path>
+      <cornerSize if="{screen.height} &lt; 900">27 27</cornerSize>
+      <path if="{screen.height} &lt; 600">./_inc/images/panel-sm.png</path>
+      <cornerSize if="{screen.height} &lt; 600">20 20</cornerSize>
       <color>E4E4E4FF</color>
       <zIndex>7</zIndex>
     </ninepatch>
@@ -504,6 +516,12 @@
       <size>0.53 0.64</size>
       <path>./_inc/images/panel.png</path>
       <cornerSize>40 40</cornerSize>
+      <!-- cornerSize is in screen pixels: keep the corners the same share of
+           the screen as at 1080p by switching to a scaled texture -->
+      <path if="{screen.height} &lt; 900">./_inc/images/panel-md.png</path>
+      <cornerSize if="{screen.height} &lt; 900">27 27</cornerSize>
+      <path if="{screen.height} &lt; 600">./_inc/images/panel-sm.png</path>
+      <cornerSize if="{screen.height} &lt; 600">20 20</cornerSize>
       <color>${panelTint}</color>
       <zIndex>5</zIndex>
     </ninepatch>
@@ -525,6 +543,12 @@
       <size>0.53 0.44</size>
       <path>./_inc/images/panel.png</path>
       <cornerSize>40 40</cornerSize>
+      <!-- cornerSize is in screen pixels: keep the corners the same share of
+           the screen as at 1080p by switching to a scaled texture -->
+      <path if="{screen.height} &lt; 900">./_inc/images/panel-md.png</path>
+      <cornerSize if="{screen.height} &lt; 900">27 27</cornerSize>
+      <path if="{screen.height} &lt; 600">./_inc/images/panel-sm.png</path>
+      <cornerSize if="{screen.height} &lt; 600">20 20</cornerSize>
       <color>${panelTint}</color>
       <zIndex>5</zIndex>
     </ninepatch>
@@ -549,6 +573,12 @@
       <size>0.53 0.18</size>
       <path>./_inc/images/panel.png</path>
       <cornerSize>40 40</cornerSize>
+      <!-- cornerSize is in screen pixels: keep the corners the same share of
+           the screen as at 1080p by switching to a scaled texture -->
+      <path if="{screen.height} &lt; 900">./_inc/images/panel-md.png</path>
+      <cornerSize if="{screen.height} &lt; 900">27 27</cornerSize>
+      <path if="{screen.height} &lt; 600">./_inc/images/panel-sm.png</path>
+      <cornerSize if="{screen.height} &lt; 600">20 20</cornerSize>
       <color>${panelTint}</color>
       <zIndex>5</zIndex>
     </ninepatch>
